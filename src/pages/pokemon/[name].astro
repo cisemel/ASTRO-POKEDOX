@@ -1,0 +1,52 @@
+
+---
+export async function getStaticPaths() {
+  const res = await fetch("https://pokeapi.co/api/v2/pokemon?limit=20");
+  const data = await res.json();
+
+  return data.results.map((pokemon) => ({
+    params: { name: pokemon.name },
+  }));
+}
+
+const { name } = Astro.params;
+
+const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${name}`);
+const data = await res.json();
+---
+
+<html>
+  <head>
+    <title>{data.name} - Pokémon Info</title>
+    <style>
+      body {
+        font-family: sans-serif;
+        background: #f4f4f4;
+        padding: 40px;
+        text-align: center;
+      }
+      .card {
+        background: rgba(130, 130, 130, 0.815);
+        display: inline-block;
+        padding: 30px;
+        border-radius: 8px;
+        box-shadow: 0 2px 12px rgba(0,0,0,0.15);
+        text-transform: capitalize;
+      }
+      img {
+        margin-bottom: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card">
+      <h1>{data.name}</h1>
+      <img src={data.sprites.front_default} alt={data.name} />
+      <p><strong>Height:</strong> {data.height}</p>
+      <p><strong>Weight:</strong> {data.weight}</p>
+      <p><strong>Type:</strong> {data.types.map(t => t.type.name).join(", ")}</p>
+    </div>
+    <br />
+    <a href="/pokedex" style="display:inline-block; margin-top: 25px;">Back to Pokedex</a>
+  </body>
+</html>

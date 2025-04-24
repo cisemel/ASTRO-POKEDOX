@@ -1,0 +1,48 @@
+
+---
+const response = await fetch("https://pokeapi.co/api/v2/pokemon?limit=20");
+const data = await response.json();
+const pokemons = data.results;
+---
+
+<html>
+  <head>
+    <title>Pokedox</title>
+    <style>
+      body {
+        font-family: sans-serif;
+        background: #f4f4f4;
+        padding: 30px;
+        text-align: center;
+      }
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+        gap: 20px;
+        margin-top: 20px;
+      }
+      .card {
+        background: rgba(240, 193, 225, 0.834);
+        padding: 10px;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        text-transform: capitalize;
+      }
+      a {
+        text-decoration: none;
+        color: black;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Pokedox</h1>
+    <div class="grid">
+      {pokemons.map((pokemon, i) => (
+        <a href={`/pokemon/${pokemon.name}`} class="card">
+          <p>{pokemon.name}</p>
+          <img src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${i + 1}.png`} width="80" height="80" alt={pokemon.name} />
+        </a>
+      ))}
+    </div>
+  </body>
+</html>
